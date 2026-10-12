@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rulebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef0ec; --surface:#ffffff; --raised:#f7f8f5; --ink:#1e2420; --muted:#5f6760; --faint:#8a918a;
+  --line:#dcdfd9; --hover:rgba(30,36,32,.05);
+  --gm:#2e6a4c; --gm-soft:#e3efe7; --pl:#6a4c9c; --pl-soft:#ece6f5;
+  --off:#34648f; --off-soft:#e2ecf5; --mod:#9a600f; --mod-soft:#f7ecd9; --cus:#a8435a; --cus-soft:#f7e4e8;
+  --danger:#b83a34; --shadow:rgba(20,28,22,.14);
+  --acc:#1e2420; --acc-soft:#e3e6e0; --on-acc:#ffffff;
+  --serif:"Alegreya",Georgia,"Times New Roman",serif;
+  --sans:"Alegreya Sans",ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media screen and (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#121513; --surface:#1a1e1b; --raised:#20251f; --ink:#e6e8e3; --muted:#a0a79f; --faint:#788078;
+  --line:#2d332e; --hover:rgba(255,255,255,.05);
+  --gm:#72c197; --gm-soft:#1d2f25; --pl:#b297e2; --pl-soft:#29223a;
+  --off:#82b2de; --off-soft:#1b2836; --mod:#e2aa52; --mod-soft:#33291a; --cus:#e68fa0; --cus-soft:#37222a;
+  --danger:#e3726b; --shadow:rgba(0,0,0,.5); --acc:#e6e8e3; --acc-soft:#262b27; --on-acc:#121513;
+}}
+:root[data-theme="dark"]{
+  --bg:#121513; --surface:#1a1e1b; --raised:#20251f; --ink:#e6e8e3; --muted:#a0a79f; --faint:#788078;
+  --line:#2d332e; --hover:rgba(255,255,255,.05);
+  --gm:#72c197; --gm-soft:#1d2f25; --pl:#b297e2; --pl-soft:#29223a;
+  --off:#82b2de; --off-soft:#1b2836; --mod:#e2aa52; --mod-soft:#33291a; --cus:#e68fa0; --cus-soft:#37222a;
+  --danger:#e3726b; --shadow:rgba(0,0,0,.5); --acc:#e6e8e3; --acc-soft:#262b27; --on-acc:#121513;
+}
+[data-role="gm"]{--acc:var(--gm);--acc-soft:var(--gm-soft)}
+[data-role="pl"]{--acc:var(--pl);--acc-soft:var(--pl-soft)}
+@media screen and (prefers-color-scheme:dark){ :root:not([data-theme="light"]) [data-role]{--on-acc:#121513} }
+:root[data-theme="dark"] [data-role]{--on-acc:#121513}
+
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+#root{height:100%}
+.i{flex:none;display:block}
+.muted{color:var(--muted)}
+
+/* ---------- Buttons & fields ---------- */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid transparent;border-radius:7px;background:var(--acc);color:var(--on-acc);font-weight:700;font-size:15px}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line);font-weight:500}
+.btn.ghost:hover{background:var(--raised);filter:none}
+.btn.danger{background:var(--danger);color:#fff}
+.field{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:7px;background:var(--surface);font-size:16px}
+.field:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+textarea.field{resize:vertical;min-height:90px;font-family:var(--serif);font-size:17px;line-height:1.55}
+label.lb{font-size:14px;font-weight:500;color:var(--muted);margin-top:10px}
+.err{color:var(--danger);font-size:14px;min-height:20px}
+
+/* ---------- Hex cover ---------- */
+.cover{position:relative;height:170px;background:var(--acc-soft);color:var(--acc);overflow:hidden;flex:none}
+.cover svg{position:absolute;inset:0}
+.cover::after{content:"";position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(to bottom,transparent,var(--acc-soft))}
+
+/* ---------- Login ---------- */
+.auth{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);height:100%}
+.auth-form{display:flex;flex-direction:column;justify-content:center;padding:40px clamp(24px,7vw,96px);background:var(--surface);overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;margin-bottom:auto;padding-bottom:40px;color:var(--gm)}
+.brand span{color:var(--ink)}
+.auth h1{font-family:var(--serif);font-weight:700;font-size:40px;line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
+.auth .sub{color:var(--muted);margin:0 0 24px;max-width:26em}
+.auth form{display:flex;flex-direction:column;gap:4px;max-width:360px}
+.auth form .btn{justify-content:center;margin-top:10px;padding:10px}
+.or{display:flex;align-items:center;gap:12px;color:var(--faint);font-size:14px;margin:14px 0 4px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.swap{margin-top:22px;color:var(--muted);font-size:15px;margin-bottom:auto}
+.linkbtn{background:none;border:0;padding:0;color:var(--acc);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.auth-art{position:relative;background:var(--gm-soft);color:var(--gm);display:grid;place-items:center;padding:40px;overflow:hidden}
+.auth-art>svg{position:absolute;inset:0}
+.preview{position:relative;width:min(400px,100%);background:var(--surface);border-radius:14px;box-shadow:0 1px 0 var(--line),0 24px 60px var(--shadow);padding:22px 24px;color:var(--ink)}
+.preview .ph{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.preview .ph .tile{width:34px;height:34px}
+.preview h3{margin:0;font-family:var(--serif);font-size:21px}
+.preview .pr{padding:12px 0;border-top:1px solid var(--line)}
+.preview .pr:first-of-type{border-top:0}
+.preview .pr b{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:15px}
+.preview .pr p{margin:4px 0 0;font-family:var(--serif);font-size:15.5px;color:var(--muted);line-height:1.45}
+.art-cap{position:relative;margin-top:22px;color:var(--gm);font-weight:500;text-align:center;max-width:24em}
+
+/* ---------- Shell ---------- */
+.app{display:flex;height:100%}
+.sidebar{width:252px;flex:none;background:var(--bg);display:flex;flex-direction:column;padding:14px 10px;overflow-y:auto;border-right:1px solid var(--line)}
+.sidebar .brand{padding:4px 10px 18px;margin:0;font-size:19px}
+.nav-sec{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--muted);padding:16px 10px 6px}
+.dot{width:8px;height:8px;border-radius:50%}
+.nav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:6px 10px;min-height:34px;border:0;border-radius:7px;background:none;font-size:15.5px;color:var(--muted)}
+.nav:hover{background:var(--hover);color:var(--ink)}
+.nav.active{background:var(--acc-soft);color:var(--acc);font-weight:700}
+.nav.sub{padding-left:28px;font-size:15px}
+.nav.sub .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sidebar .spacer{flex:1;min-height:20px}
+.who{display:flex;align-items:center;gap:10px;padding:10px;border-top:1px solid var(--line);margin-top:8px}
+.who .av{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}
+.who div{min-width:0;flex:1;font-size:14px;line-height:1.25}
+.who small{display:block;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
+.iconbtn{background:none;border:0;border-radius:7px;padding:6px;color:var(--muted);display:grid;place-items:center}
+.iconbtn:hover{background:var(--hover);color:var(--ink)}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;height:100%;background:var(--surface)}
+.topbar{height:50px;flex:none;display:flex;align-items:center;gap:4px;padding:0 14px;font-size:15px;border-bottom:1px solid var(--line)}
+.crumb{background:none;border:0;padding:3px 7px;border-radius:6px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+button.crumb:hover{background:var(--hover);color:var(--ink)}
+.crumb.here{color:var(--ink);font-weight:500}
+.crumb-sep{color:var(--faint)}
+.menu-btn{display:none}
+.scroll{flex:1;overflow-y:auto}
+.page{max-width:820px;margin:0 auto;padding:0 48px 120px}
+.tile{width:76px;height:76px;border-radius:16px;background:var(--acc);color:var(--on-acc);display:grid;place-items:center;box-shadow:0 0 0 5px var(--surface)}
+.page>.tile{margin-top:-42px;position:relative}
+.page h1{font-family:var(--serif);font-size:42px;font-weight:700;line-height:1.12;margin:18px 0 8px;letter-spacing:-.01em}
+.lede{color:var(--muted);font-size:18px;max-width:34em;margin:0}
+.page h2{font-size:21px;font-weight:800;margin:40px 0 12px;display:flex;align-items:center;gap:10px}
+.page h2 .grow{flex:1}
+.page h3{font-size:18px;font-weight:800;margin:26px 0 6px}
+.props{display:grid;grid-template-columns:max-content 1fr;gap:6px 22px;margin:18px 0;font-size:16px}
+.props dt{color:var(--muted)}
+.props dd{margin:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+
+.tag{display:inline-block;font-size:13px;font-weight:700;line-height:20px;padding:0 8px;border-radius:4px;white-space:nowrap;background:var(--raised);color:var(--muted)}
+.tag.off{background:var(--off-soft);color:var(--off)} .tag.mod{background:var(--mod-soft);color:var(--mod)} .tag.cus{background:var(--cus-soft);color:var(--cus)}
+
+.note{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:10px;background:var(--acc-soft);margin:20px 0;font-size:16px}
+.note .i{color:var(--acc);margin-top:2px}
+
+/* ---------- List rows ---------- */
+.list{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.lrow{position:relative;display:flex;align-items:center;border-top:1px solid var(--line)}
+.lrow:first-child{border-top:0}
+.lopen{flex:1;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;text-align:left;background:none;border:0;padding:14px 8px 14px 16px;border-radius:12px}
+.lrow:hover{background:var(--raised)}
+.lrow:first-child,.lrow:first-child .lopen{border-top-left-radius:12px;border-top-right-radius:12px}
+.lrow:last-child,.lrow:last-child .lopen{border-bottom-left-radius:12px;border-bottom-right-radius:12px}
+.lic{width:36px;height:36px;border-radius:9px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center}
+.lmain{min-width:0}
+.lmain b{display:block;font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lmain span{display:block;color:var(--muted);font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lmeta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.lrow .iconbtn{margin-right:10px}
+.pop{position:absolute;right:10px;top:calc(100% - 6px);z-index:20;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px var(--shadow);padding:5px;min-width:170px}
+.pop button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;padding:7px 10px;border-radius:6px;font-size:15px}
+.pop button:hover{background:var(--hover)}
+.pop button.bad{color:var(--danger)}
+.addrow{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;border-top:1px solid var(--line);padding:12px 16px;color:var(--muted);font-size:15.5px;border-radius:0 0 12px 12px}
+.addrow:hover{background:var(--raised);color:var(--acc)}
+
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:34px 20px;gap:8px}
+.empty .art{width:72px;height:72px;border-radius:50%;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;margin-bottom:4px}
+.empty b{font-size:18px}
+.empty p{margin:0 0 8px;color:var(--muted);max-width:26em}
+
+/* ---------- Home choices ---------- */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+.choice{text-align:left;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:0;overflow:hidden}
+.choice:hover{border-color:var(--acc);box-shadow:0 8px 26px var(--shadow)}
+.choice .mini{position:relative;height:92px;background:var(--acc-soft);color:var(--acc)}
+.choice .mini svg{position:absolute;inset:0}
+.choice .mini .tile{position:absolute;left:20px;bottom:-26px;width:54px;height:54px;border-radius:12px}
+.choice .ct{padding:38px 20px 20px}
+.choice b{display:block;font-size:20px;font-weight:800;margin-bottom:4px}
+.choice span{color:var(--muted);font-size:16px}
+
+/* ---------- Rules ---------- */
+.toolbar{display:flex;flex-direction:column;gap:12px;margin:28px 0 4px}
+.searchbox{position:relative}
+.searchbox .i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.searchbox .field{padding-left:40px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 13px;font-size:14.5px;color:var(--muted)}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:var(--on-acc);font-weight:700}
+.grp{margin-top:18px}
+.grp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:6px 0;font-size:20px;font-weight:800;border-bottom:2px solid var(--ink)}
+.grp>summary::-webkit-details-marker{display:none}
+.grp>summary .chev{transition:transform .15s;color:var(--muted)}
+.grp[open]>summary .chev{transform:rotate(90deg)}
+.grp>summary .n{font-weight:500;color:var(--faint);font-size:16px}
+.rule{padding:16px 0;border-bottom:1px solid var(--line)}
+.rule header{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rule h4{margin:0;font-size:18px;font-weight:800}
+.rule header .grow{flex:1}
+.rtext{font-family:var(--serif);font-size:18.5px;line-height:1.6;margin:6px 0 0;max-width:38em}
+.orig{margin-top:8px}
+.orig summary{cursor:pointer;color:var(--muted);font-size:14.5px;width:max-content}
+.orig p{font-family:var(--serif);color:var(--muted);font-size:16.5px;margin:6px 0 0;padding-left:12px;border-left:2px solid var(--line)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.cmp>div{border-radius:10px;padding:12px 14px;background:var(--raised)}
+.cmp>div.yours{background:var(--mod-soft)}
+.cmp small{display:block;font-weight:700;color:var(--muted);font-size:13.5px;margin-bottom:4px}
+.cmp .yours small{color:var(--mod)}
+.cmp p{margin:0;font-family:var(--serif);font-size:17px;line-height:1.5}
+.act{background:none;border:1px solid transparent;padding:3px 10px;border-radius:6px;font-size:14.5px;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+.act:hover{background:var(--hover);color:var(--ink)}
+.act.bad:hover{color:var(--danger)}
+
+.panel{border:1px solid var(--line);border-radius:12px;padding:20px;margin:12px 0;display:flex;flex-direction:column;gap:4px;background:var(--surface)}
+.panel .row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+
+/* ---------- Modal / toast ---------- */
+.overlay{position:fixed;inset:0;background:rgba(10,14,11,.5);display:grid;place-items:center;padding:20px;z-index:50}
+.modal{background:var(--surface);border-radius:14px;box-shadow:0 24px 64px var(--shadow);width:100%;max-width:460px;padding:26px}
+.modal h3{margin:0 0 6px;font-family:var(--serif);font-size:24px}
+.copyline{display:flex;gap:8px;margin-top:16px}
+.copyline input{flex:1;min-width:0}
+.access{margin-top:18px;font-size:16px}
+.people{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.person{display:flex;align-items:center;gap:6px;background:var(--raised);border-radius:999px;padding:3px 10px 3px 3px;font-size:14.5px}
+.person i{width:22px;height:22px;border-radius:50%;background:var(--pl-soft);color:var(--pl);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:12px}
+.modal .row{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+.toast{white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis;position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:9px;font-size:15px;font-weight:500;z-index:60}
+
+
+/* ---------- Topbar extras ---------- */
+.topbar .tb-right{margin-left:auto;display:flex;gap:4px}
+.tb-dice{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:14.5px;color:var(--ink)}
+.tb-dice:hover{background:var(--hover)}
+.scrim{display:none}
+.tabbar{display:none}
+.print-only{display:none}
+
+/* ---------- Dice tray ---------- */
+.modal.dice{max-width:520px}
+.dgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:16px}
+.die{display:flex;flex-direction:column;align-items:center;gap:4px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 0 8px;font-weight:800;font-size:14.5px;color:var(--muted)}
+.die:hover{border-color:var(--ink);color:var(--ink)}
+.die.on{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.die svg{width:24px;height:24px}
+.dctl{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px}
+.dctl>div{display:flex;flex-direction:column;gap:4px}
+.dctl label{font-size:14px;font-weight:500;color:var(--muted)}
+.step{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.step button{background:none;border:0;width:40px;height:38px;display:grid;place-items:center;color:var(--muted)}
+.step button:hover{background:var(--hover);color:var(--ink)}
+.step output{min-width:48px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.modes{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.rollbtn{width:100%;justify-content:center;margin-top:18px;padding:12px;font-size:17px;background:var(--ink);color:var(--surface)}
+.dres{margin-top:18px;border-radius:12px;background:var(--raised);padding:18px;text-align:center;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.dres .tot{font-family:var(--serif);font-size:56px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.dres .tot.crit{color:var(--gm)} .dres .tot.fumble{color:var(--danger)}
+.dres .lbl{color:var(--muted);font-size:15px}
+.faces{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.face{min-width:34px;height:34px;padding:0 8px;border-radius:8px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums}
+.face.drop{opacity:.4;text-decoration:line-through}
+.face.max{border-color:var(--gm);color:var(--gm)} .face.min{border-color:var(--danger);color:var(--danger)}
+.dres.fresh .tot,.dres.fresh .face{animation:tumble .35s ease-out}
+@keyframes tumble{0%{transform:rotate(-25deg) scale(.6);opacity:0}70%{transform:rotate(6deg) scale(1.08);opacity:1}100%{transform:none}}
+.dhist{margin-top:18px}
+.dhist b{font-size:15px}
+.dhist ol{list-style:none;margin:6px 0 0;padding:0;font-size:15px}
+.dhist li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px solid var(--line);color:var(--muted)}
+.dhist li strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.fair{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:var(--muted);margin-top:4px}
+
+/* ---------- Condition links & cards ---------- */
+.cl{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline dotted;text-decoration-color:var(--acc);text-decoration-thickness:1.5px;text-underline-offset:3px;cursor:help}
+.cl:hover{color:var(--acc)}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.cond{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--surface)}
+.cond h3{margin:0;font-size:19px;font-weight:800}
+.csum{margin:4px 0 8px;color:var(--muted);font-size:15.5px}
+.cond ul,.cond ol{margin:0;padding-left:20px;font-family:var(--serif);font-size:17px;line-height:1.5}
+.cond li{margin:3px 0}
+.cond ol.lv{margin-top:8px;font-size:16px}
+.modal .cond{border:0;padding:0}
+/* ---------- Rulings ---------- */
+.ruling{padding:14px 0;border-bottom:1px solid var(--line)}
+.ruling .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.ruling .q{font-weight:800;font-size:17px;margin:4px 0 2px}
+.ruling .a{font-family:var(--serif);font-size:18px;line-height:1.55;margin:0}
+.rul-inline{margin-top:10px;border-left:3px solid var(--acc);background:var(--acc-soft);border-radius:0 8px 8px 0;padding:8px 12px}
+.rul-inline b{font-size:13.5px}
+.rul-inline p{margin:2px 0 0;font-family:var(--serif);font-size:16.5px;line-height:1.5}
+/* ---------- Saved rolls ---------- */
+.modal.dice{max-height:92vh;overflow-y:auto}
+.presets{margin-top:20px}
+.presets>div>b{font-size:16px}
+.plist{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pchip{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.pchip:hover{border-color:var(--ink)}
+.pchip button{background:none;border:0}
+.pr-go{display:flex;flex-direction:column;align-items:flex-start;padding:7px 4px 7px 12px;text-align:left}
+.pr-go b{font-size:15px}
+.pr-go span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pchip .px{padding:0 8px;color:var(--faint)}
+.pchip .px:hover{color:var(--danger)}
+.pform{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px;display:flex;flex-direction:column;gap:2px}
+.hint{font-size:13.5px;color:var(--muted)}
+.dsplit{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.dsplit>div{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dsplit small{font-weight:700;color:var(--muted);font-size:13.5px}
+.dres .tot.sm{font-size:44px}
+
+@media (max-width:860px){
+  .auth{grid-template-columns:1fr}
+  .auth-art{display:none}
+  .auth-form{padding:32px 24px}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .sidebar{position:fixed;top:0;bottom:0;left:0;z-index:40;width:min(290px,85vw);transform:translateX(-105%);transition:transform .2s;box-shadow:0 0 30px var(--shadow);
+    padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  .sidebar.open{transform:none}
+  .scrim{display:block;position:fixed;inset:0;z-index:39;background:rgba(10,14,11,.4)}
+  .nav{min-height:44px}
+  .menu-btn{display:grid}
+  .iconbtn{padding:10px}
+  .topbar{padding:0 6px;height:54px}
+  .topbar .crumb:not(.here),.topbar .crumb-sep{display:none}
+  .crumb.here{max-width:60vw;font-weight:700}
+  .tb-dice{display:none}
+  .page{padding:0 16px calc(110px + env(safe-area-inset-bottom,0px))}
+  .page h1{font-size:30px}
+  .page>.tile{width:62px;height:62px;margin-top:-34px}
+  .lede{font-size:16.5px}
+  .page h2{flex-wrap:wrap;font-size:19px}
+  .cover{height:110px}
+  .choices,.cmp,.two,.cgrid{grid-template-columns:1fr}
+  .lmeta{display:none}
+  .lopen{padding:12px 4px 12px 12px;gap:12px}
+  .lrow .iconbtn{margin-right:4px}
+  .pop button{padding:12px}
+  .act{padding:8px 12px}
+  .chip{padding:6px 14px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+  .rtext{font-size:17.5px}
+  .btn{padding:10px 16px}
+  .actions .btn{flex:1;justify-content:center}
+  .panel{padding:16px}
+  .props{gap:4px 16px}
+  .copyline{flex-direction:column}
+  .copyline .btn{justify-content:center}
+  .overlay{place-items:end stretch;padding:0}
+  .modal{max-width:none!important;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px))}
+  .modal .row .btn{flex:1;justify-content:center}
+  .dgrid{grid-template-columns:repeat(4,1fr)}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
+    padding-bottom:env(safe-area-inset-bottom,0px)}
+  .tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;padding:8px 0 7px;font-size:12px;font-weight:500;color:var(--muted);min-height:58px}
+  .tabbar button.on{color:var(--acc);font-weight:800}
+  .tabbar .dicetab .i{color:var(--surface);background:var(--ink);border-radius:9px;padding:4px;width:32px;height:32px;margin-top:-2px}
+  .toast{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+}
+@media print{
+  @page{margin:15mm 14mm}
+  html,body,#root,.app,.main,.scroll{height:auto!important;overflow:visible!important;display:block!important;background:#fff!important}
+  body{font-size:11pt;color:#000}
+  .sidebar,.topbar,.cover,.tabbar,.toolbar,.actions,.scrim,.toast,.overlay,.orig>summary,.page>.tile,.note,.no-print{display:none!important}
+  .print-only{display:block!important}
+  .page{max-width:none;padding:0!important;margin:0}
+  .page h1{font-size:24pt;margin:0 0 2pt}
+  .lede{font-size:11pt}
+  .props{margin:6pt 0 10pt;font-size:10pt}
+  .ph-head{border-bottom:2pt solid #000;padding-bottom:6pt;margin-bottom:6pt;font-size:9.5pt;color:#444;display:flex!important;justify-content:space-between;gap:12pt}
+  .grp{margin-top:10pt;break-inside:auto}
+  .grp>summary{font-size:13pt;border-bottom:1.5pt solid #000;break-after:avoid}
+  .grp>summary .chev{display:none}
+  .rule{padding:6pt 0;break-inside:avoid;border-bottom:.5pt solid #bbb}
+  .rule h4{font-size:11pt}
+  .rtext{font-size:11pt;line-height:1.4;max-width:none}
+  .orig{margin-top:3pt}
+  .orig p{font-size:9.5pt;color:#444;border-left:1.5pt solid #999}
+  .orig p::before{content:"Official rule: ";font-family:var(--sans);font-weight:700}
+  .cl{text-decoration:none;color:#000}
+  .ruling,.cond{break-inside:avoid}
+  .rul-inline{background:none;border-left:1.5pt solid #000}
+  .rul-inline p,.ruling .a{font-size:10.5pt}
+  .tag{background:none!important;color:#000!important;border:.75pt solid #777;font-size:8pt;line-height:13pt}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* ---------- Icons ---------- */
+const P={
+  d20:"M12 2l8.7 5v10L12 22l-8.7-5V7z M12 7l4.6 8H7.4z M12 2v5 M20.7 7l-4.1 8 M3.3 7l4.1 8 M7.4 15l-4.1 2 M16.6 15l4.1 2 M12 22l-4.6-7 M12 22l4.6-7",
+  home:"M3.5 11L12 4l8.5 7 M5.5 9.5V20h13V9.5 M10 20v-5h4v5",
+  book:"M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z M5 19.5A1.5 1.5 0 0 0 6.5 21H19 M9 7.5h6",
+  scroll:"M8 4h10a2 2 0 0 1 2 2v11 M8 4a2 2 0 0 0-2 2v12a2 2 0 0 1-2 2h11a2 2 0 0 0 2-2v-1 M8 4a2 2 0 0 0-2 2 M10 9h6 M10 13h6",
+  map:"M9 4L3.5 6v14L9 18l6 2 5.5-2V4L15 6z M9 4v14 M15 6v14",
+  sword:"M20 4l-9.5 9.5 M20 4h-4.5 M20 4v4.5 M8 11l5 5 M10.5 13.5L5 19 M4 18l2 2",
+  link:"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1 M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1",
+  out:"M14 4h5v16h-5 M9.5 8l-4 4 4 4 M5.5 12H16",
+  plus:"M12 5v14 M5 12h14",
+  dots:"M5 12h.01 M12 12h.01 M19 12h.01",
+  search:"M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M20 20l-4-4",
+  pen:"M4 20h4L19 9l-4-4L4 16z M13 7l4 4",
+  eye:"M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+  trash:"M4 7h16 M9.5 7V4h5v3 M6.5 7l1 13h9l1-13",
+  menu:"M4 6h16 M4 12h16 M4 18h16",
+  chev:"M9 6l6 6-6 6",
+  info:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 8h.01",
+  door:"M6 21V4h10v17 M3 21h18 M13 12h.01",
+  dice:"M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z M8.5 8.5h.01 M15.5 8.5h.01 M12 12h.01 M8.5 15.5h.01 M15.5 15.5h.01",
+  print:"M7 9V3h10v6 M7 17H4v-6.5A1.5 1.5 0 0 1 5.5 9h13a1.5 1.5 0 0 1 1.5 1.5V17h-3 M7 14h10v7H7z",
+  minus:"M5 12h14",
+  d4:"M12 3l9 16H3z M12 3v16",
+  d6:"M12 2.5l8.5 4.8v9.4L12 21.5l-8.5-4.8V7.3z M3.5 7.3L12 12l8.5-4.7 M12 12v9.5",
+  d8:"M12 2l9 10-9 10-9-10z M3 12h18 M12 2l-4 10 4 10 4-10z",
+  d10:"M12 2l9 8-9 12-9-12z M3 10l9 4 9-4 M12 14v8",
+  d12:"M12 2.5l9 6.5-3.4 10.5H6.4L3 9z M12 7l4.8 3.5-1.8 5.5H9l-1.8-5.5z M12 2.5V7 M21 9l-4.2 1.5 M17.6 19.5L15 16 M6.4 19.5L9 16 M3 9l4.2 1.5",
+  d100:"M8 4a5 5 0 1 0 0 10A5 5 0 1 0 8 4z M16 10a5 5 0 1 0 0 10 5 5 0 1 0 0-10z",
+  shield:"M12 3l8 3v6c0 4.6-3.4 8-8 9-4.6-1-8-4.4-8-9V6z M9 12l2 2 4-4",
+  gavel:"M13.5 4.5l6 6 M10.5 7.5l6 6 M12 6l-5 5 6 6 5-5 M9.5 14.5L3.5 20.5 M13 21h8",
+  users:"M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5 M16 4.5a3.5 3.5 0 0 1 0 6.5 M18 14.8c1.8.7 3 2.5 3 5.2"
+};
+const ic=(n,s=18,w=1.8)=>`<svg class="i" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${n==="dots"?3.2:n==="dice"?Math.max(w,2.2):w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[n]}"/></svg>`;
+
+/* Hex battle-map pattern with a few highlighted cells */
+const HW=38.1, HH=66;
+function cellPts(i,j,off){const cx=off?HW*i:HW/2+HW*i, cy=off?55+HH*j:22+HH*j;
+  return [[cx,cy-22],[cx+19.05,cy-11],[cx+19.05,cy+11],[cx,cy+22],[cx-19.05,cy+11],[cx-19.05,cy-11]].map(p=>p.join(",")).join(" ");}
+let hexN=0;
+function hex(cells=[]){
+  const id="hx"+(hexN++);
+  return `<svg aria-hidden="true" width="100%" height="100%"><defs><pattern id="${id}" width="${HW}" height="${HH}" patternUnits="userSpaceOnUse">
+  <path d="M19.05 0L38.1 11V33L19.05 44L0 33V11Z M19.05 44V66" fill="none" stroke="currentColor" stroke-opacity=".28" stroke-width="1"/></pattern></defs>
+  <rect width="100%" height="100%" fill="url(#${id})"/>
+  ${cells.map(([i,j,o,a])=>`<polygon points="${cellPts(i,j,o)}" fill="currentColor" fill-opacity="${a||.16}"/>`).join("")}</svg>`;
+}
+const GM_CELLS=[[13,0,1,.12],[13,1,0,.18],[14,1,1,.18],[14,1,0,.26],[15,1,1,.4],[17,0,0,.1],[18,1,1,.14]];
+const PL_CELLS=[[11,1,1,.14],[12,0,0,.2],[12,1,1,.28],[13,0,1,.14],[13,1,0,.4],[16,0,1,.1],[17,1,0,.12]];
+const HOME_CELLS=[[14,0,1,.14],[15,1,0,.22],[15,1,1,.12],[16,0,0,.1]];
+const cover=role=>`<div class="cover">${hex(role==="gm"?GM_CELLS:role==="pl"?PL_CELLS:HOME_CELLS)}</div>`;
+
+/* ---------- Official D&D 5e rules ---------- */
+const OFFICIAL = [
+  {id:"adv",cat:"General",title:"Advantage and disadvantage",text:"Roll two d20s and use the higher result (advantage) or the lower one (disadvantage). Multiple sources don't stack, and having both cancels them out."},
+  {id:"insp",cat:"General",title:"Inspiration",text:"The GM can award inspiration for good roleplay. Spend it to gain advantage on one attack roll, saving throw, or ability check."},
+  {id:"crit",cat:"Combat",title:"Critical hits",text:"On a natural 20, roll all of the attack's damage dice twice, then add your modifiers once."},
+  {id:"opp",cat:"Combat",title:"Opportunity attacks",text:"When a hostile creature you can see leaves your reach, you can use your reaction to make one melee attack against it."},
+  {id:"grap",cat:"Combat",title:"Grappling",text:"Replace one attack with a Strength (Athletics) check contested by the target's Athletics or Acrobatics. On a success, the target's speed becomes 0."},
+  {id:"cover",cat:"Combat",title:"Cover",text:"Half cover grants +2 to AC and Dexterity saves. Three-quarters cover grants +5. Total cover means you can't be targeted directly."},
+  {id:"death",cat:"Combat",title:"Death saving throws",text:"At 0 hit points, roll a d20 at the start of each turn: 10 or higher is a success. Three successes stabilize you; three failures and you die. A natural 20 restores 1 hit point."},
+  {id:"conc",cat:"Spellcasting",title:"Concentration",text:"When you take damage while concentrating, make a Constitution save against DC 10 or half the damage taken, whichever is higher. On a failure, the spell ends."},
+  {id:"short",cat:"Resting",title:"Short rest",text:"At least one hour of light activity. You can spend Hit Dice to regain hit points."},
+  {id:"long",cat:"Resting",title:"Long rest",text:"At least eight hours, mostly sleeping. Regain all hit points and up to half your total Hit Dice. Only one long rest per 24 hours."}
+];
+const CATS=["General","Combat","Spellcasting","Resting","Homebrew"];
+
+
+/* ---------- Conditions (D&D 5e SRD 5.1, summarized) ---------- */
+const CONDS=[
+ {id:"blinded",name:"Blinded",sum:"You can't see.",fx:["You automatically fail any ability check that requires sight.","Attack rolls against you have advantage.","Your attack rolls have disadvantage."]},
+ {id:"charmed",name:"Charmed",sum:"You're under someone's influence.",fx:["You can't attack the charmer or target them with harmful abilities or magical effects.","The charmer has advantage on ability checks to interact with you socially."]},
+ {id:"deafened",name:"Deafened",sum:"You can't hear.",fx:["You automatically fail any ability check that requires hearing."]},
+ {id:"exhaustion",name:"Exhaustion",sum:"Measured in six levels. Each level adds its effect to the ones before it.",fx:["Finishing a long rest with food and drink reduces your exhaustion by one level."],
+  levels:["Disadvantage on ability checks","Speed halved","Disadvantage on attack rolls and saving throws","Hit point maximum halved","Speed reduced to 0","Death"]},
+ {id:"frightened",name:"Frightened",sum:"Something terrifies you.",fx:["You have disadvantage on ability checks and attack rolls while the source of your fear is in sight.","You can't willingly move closer to the source of your fear."]},
+ {id:"grappled",name:"Grappled",sum:"Someone is holding on to you.",fx:["Your speed becomes 0, and you can't gain any bonus to speed.","It ends if the grappler is incapacitated, or if an effect moves you out of their reach."]},
+ {id:"incapacitated",name:"Incapacitated",sum:"You can't act.",fx:["You can't take actions or reactions."]},
+ {id:"invisible",name:"Invisible",sum:"You can't be seen without magic or a special sense.",fx:["You count as heavily obscured for hiding, but noise or tracks can still give away where you are.","Attack rolls against you have disadvantage.","Your attack rolls have advantage."]},
+ {id:"paralyzed",name:"Paralyzed",sum:"You can't move at all.",fx:["You're incapacitated and can't move or speak.","You automatically fail Strength and Dexterity saving throws.","Attack rolls against you have advantage.","Any hit from an attacker within 5 feet is a critical hit."]},
+ {id:"petrified",name:"Petrified",sum:"You've been turned to stone or another solid substance.",fx:["You're incapacitated, can't move or speak, and are unaware of your surroundings.","Your weight increases tenfold and you stop aging.","Attack rolls against you have advantage.","You automatically fail Strength and Dexterity saving throws.","You have resistance to all damage, and are immune to poison and disease (any already in you is suspended)."]},
+ {id:"poisoned",name:"Poisoned",sum:"Something toxic is in your system.",fx:["You have disadvantage on attack rolls and ability checks."]},
+ {id:"prone",name:"Prone",sum:"You're lying on the ground.",fx:["Your only movement option is to crawl, unless you stand up, which costs half your speed.","Your attack rolls have disadvantage.","Attacks against you have advantage if the attacker is within 5 feet, and disadvantage otherwise."]},
+ {id:"restrained",name:"Restrained",sum:"You're tied up, webbed, or otherwise held in place.",fx:["Your speed becomes 0, and you can't gain any bonus to speed.","Attack rolls against you have advantage.","Your attack rolls have disadvantage.","You have disadvantage on Dexterity saving throws."]},
+ {id:"stunned",name:"Stunned",sum:"You're dazed and barely able to respond.",fx:["You're incapacitated, can't move, and can speak only falteringly.","You automatically fail Strength and Dexterity saving throws.","Attack rolls against you have advantage."]},
+ {id:"unconscious",name:"Unconscious",sum:"You're knocked out.",fx:["You're incapacitated, can't move or speak, and are unaware of your surroundings.","You drop whatever you're holding and fall prone.","You automatically fail Strength and Dexterity saving throws.","Attack rolls against you have advantage.","Any hit from an attacker within 5 feet is a critical hit."]}
+];
+const COND_RE=/\b(blinded|charmed|deafened|exhaustion|frightened|grappled|incapacitated|invisible|paralyzed|petrified|poisoned|prone|restrained|stunned|unconscious)\b/gi;
+const linkConds=(html,skip)=>html.replace(COND_RE,w=>{const id=w.toLowerCase();return id===skip?w:`<button type="button" class="cl" data-cond="${id}">${w}</button>`;});
+const fmtDate=iso=>{try{return new Date(iso+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});}catch(e){return iso;}};
+const X=(sz=20)=>ic("plus",sz).replace('<path','<path transform="rotate(45 12 12)"');
+const EMBER_RULINGS=[
+ {id:"rl1",date:"2026-09-28",q:"Can you light fire oil with a torch you're already holding?",a:"Yes. If you're already holding a lit torch, throwing the oil and lighting it is a single action, same as the custom rule.",rule:"c1"},
+ {id:"rl2",date:"2026-10-05",q:"Does a night in a cave with a campfire count for the cold rule?",a:"Yes. Any night spent beside a fire counts as sheltered, so nobody makes the Constitution save or risks exhaustion.",rule:"c2"}];
+
+/* ---------- State ---------- */
+const uid=()=>Math.random().toString(36).slice(2,9);
+const code=()=>{const c="ABCDEFGHJKMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];return s;};
+function seed(){
+  return {user:null,users:{},joined:[],rulesets:[
+    {id:"rs-ember",owner:"Mara Voss",name:"Emberfall house rules",campaign:"Curse of the Emberfall",desc:"Grittier resting and deadlier crits for a survival campaign.",base:"D&D 5e (SRD)",
+     overrides:{long:"A long rest must be taken in a safe haven such as an inn or a warded camp. Anywhere else counts as a short rest.",crit:"On a natural 20, deal maximum damage for the dice, then roll them once more and add it."},
+     custom:[{id:"c1",cat:"Homebrew",title:"Flasks of fire oil",text:"Throwing oil and lighting it takes one action instead of two. Burning creatures take 1d4 fire damage at the start of each turn."},
+             {id:"c2",cat:"Resting",title:"Exhaustion from cold",text:"Each night spent in the open without a fire requires a DC 12 Constitution save. On a failure, gain one level of exhaustion."}],
+     rulings:EMBER_RULINGS.map(x=>({...x})),shareCode:"EMBER1",access:["Theo","Priya"]}]};
+}
+function demoRuleset(owner){
+  const cid=uid();
+  return {id:"rs-"+uid(),owner,name:"Heroic potions",campaign:"The Salt King's Tomb",desc:"Faster, more cinematic combat for a one-shot.",base:"D&D 5e (SRD)",
+    overrides:{opp:"Opportunity attacks only trigger when a creature leaves your reach without using the Disengage action or teleporting away."},
+    custom:[{id:cid,cat:"Homebrew",title:"Potions as a bonus action",text:"Drinking a potion yourself is a bonus action. Feeding one to an ally still takes your action."}],
+    rulings:[{id:uid(),date:"2026-10-03",q:"Can you drink a potion while grappled?",a:"Yes. Being grappled only stops you from moving, so drinking a potion as a bonus action still works.",rule:cid}],
+    shareCode:null,access:[]};
+}
+let S;
+try{S=JSON.parse(localStorage.getItem("rulebook-v1"))||seed();}catch(e){S=seed();}
+S.presets=S.presets||{};
+S.rulesets.forEach(r=>{if(!r.rulings)r.rulings=r.id==="rs-ember"?EMBER_RULINGS.map(x=>({...x})):[];});
+function save(){try{localStorage.setItem("rulebook-v1",JSON.stringify(S));}catch(e){}}
+
+let V={view:"home",id:null,authMode:"login",authStep:1,pending:null,filter:"All",q:"",editing:null,modal:null,sideOpen:false,joinFound:null,joinErr:"",menu:null,dice:{n:1,sides:20,mod:0,mode:"normal"},rolls:[],lastRoll:null,fresh:false,focus:null,cq:"",rulingForm:false,presetForm:false,presetDraft:null,presetErr:""};
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const me=()=>S.user?.name||"You";
+const mine=()=>S.rulesets.filter(r=>r.owner===me());
+const byId=id=>S.rulesets.find(r=>r.id===id);
+const shareURL=r=>"https://rulebook.app/join/"+r.shareCode;
+const changes=r=>Object.keys(r.overrides).length+r.custom.length;
+const plural=(n,w)=>`${n} ${w}${n===1?"":"s"}`;
+const roleOf=v=>["gm","newRuleset","edit","view"].includes(v)?"gm":["player","join","pview"].includes(v)?"pl":"";
+
+function toast(msg){const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1900);}
+function go(view,id=null){Object.assign(V,{view,id,editing:null,sideOpen:false,filter:"All",q:"",joinFound:null,joinErr:"",menu:null,modal:null,cq:"",rulingForm:false});render();$(".scroll")?.scrollTo(0,0);}
+
+function rulesFor(r){
+  const list=OFFICIAL.map(o=>({...o,src:r.overrides[o.id]?"Modified":"Official",text:r.overrides[o.id]||o.text,orig:o.text}));
+  r.custom.forEach(c=>list.push({...c,src:"Custom"}));
+  return list;
+}
+const srcTag=s=>s==="Official"?'<span class="tag off">Official 5e</span>':s==="Modified"?'<span class="tag mod">Modified</span>':'<span class="tag cus">Custom</span>';
+
+
+/* ---------- Dice: unbiased rolls from the browser's cryptographic random generator ---------- */
+function rollDie(sides){
+  const buf=new Uint32Array(1), limit=Math.floor(4294967296/sides)*sides;
+  let x;
+  do{ crypto.getRandomValues(buf); x=buf[0]; }while(x>=limit); // reject the uneven tail so every face is exactly equally likely
+  return x%sides+1;
+}
+const DICE=[4,6,8,10,12,20,100];
+// Parse dice notation like "1d20+5", "2d6+1d8-1" or "1d20+3 adv"
+function parseExpr(str){
+  let s=String(str||"").toLowerCase().trim(),mode="normal";
+  const m=s.match(/(advantage|adv|disadvantage|dis)\s*$/);
+  if(m){mode=m[1].startsWith("a")?"adv":"dis";s=s.slice(0,m.index);}
+  s=s.replace(/\s+/g,"");
+  if(!/^[+-]?(\d*d\d+|\d+)([+-](\d*d\d+|\d+))*$/.test(s))return null;
+  const terms=[];let mod=0,ok=true;
+  for(const t of s.match(/[+-]?(\d*d\d+|\d+)/g)){
+    const sign=t[0]==="-"?-1:1,b=t.replace(/^[+-]/,"");
+    if(b.includes("d")){const [n,sd]=b.split("d"),cnt=n?+n:1,sides=+sd;if(!DICE.includes(sides)||cnt<1||cnt>50)ok=false;terms.push({n:cnt,sides,sign});}
+    else mod+=sign*(+b);
+  }
+  if(!ok||!terms.length||Math.abs(mod)>999)return null;
+  return {terms,mod,mode};
+}
+function exprLabel(e,withMode=true){
+  return e.terms.map((t,i)=>(t.sign<0?"-":i?"+":"")+t.n+"d"+t.sides).join("")+(e.mod>0?"+"+e.mod:e.mod<0?String(e.mod):"")
+    +(withMode&&e.mode!=="normal"&&e.terms.some(t=>t.sides===20)?(e.mode==="adv"?" with advantage":" with disadvantage"):"");
+}
+function rollExpr(e,double){
+  const faces=[];let sum=0;
+  e.terms.forEach(t=>{
+    for(let k=0;k<t.n*(double?2:1);k++){
+      if(t.sides===20&&e.mode!=="normal"){
+        const a=rollDie(20),b=rollDie(20),keep=e.mode==="adv"?Math.max(a,b):Math.min(a,b);
+        faces.push({v:keep,sides:20,neg:t.sign<0},{v:keep===a?b:a,sides:20,drop:true}); sum+=t.sign*keep;
+      }else{const v=rollDie(t.sides);faces.push({v,sides:t.sides,neg:t.sign<0});sum+=t.sign*v;}
+    }
+  });
+  const kept=faces.filter(f=>!f.drop), one20=kept.length===1&&kept[0].sides===20;
+  return {label:exprLabel(e)+(double?" (critical, dice doubled)":""),faces,total:sum+e.mod,crit:one20&&kept[0].v===20,fumble:one20&&kept[0].v===1};
+}
+const trayExpr=()=>({terms:[{n:V.dice.n,sides:V.dice.sides,sign:1}],mod:V.dice.mod,mode:V.dice.sides===20?V.dice.mode:"normal"});
+const myPresets=()=>S.presets[S.user.email]||(S.presets[S.user.email]=[]);
+function pushRoll(L,hist){V.lastRoll=L;V.rolls.unshift(hist);V.rolls=V.rolls.slice(0,10);V.fresh=true;}
+function doRoll(){const r=rollExpr(trayExpr());pushRoll({kind:"one",r},{label:r.label,total:r.total});}
+function rollPreset(id){
+  const p=myPresets().find(x=>x.id===id);if(!p)return;
+  const prep=(str,isDmg)=>{const e=str&&parseExpr(str);if(!e)return null;if(isDmg)e.mode="normal";else if(e.mode==="normal")e.mode=V.dice.mode;return e;};
+  const h=prep(p.hit,false),d=prep(p.dmg,true),hit=h&&rollExpr(h),dmg=d&&rollExpr(d);
+  pushRoll({kind:"preset",pid:p.id,name:p.name,hit,dmg},{label:p.name,total:[hit&&hit.total+(dmg?" to hit":""),dmg&&dmg.total+(hit?" dmg":"")].filter(Boolean).join(" · ")});
+}
+function critDamage(){
+  const L=V.lastRoll,p=myPresets().find(x=>x.id===L?.pid);if(!p||!L.dmg)return;
+  const e=parseExpr(p.dmg);e.mode="normal";L.dmg=rollExpr(e,true);L.critDone=true;
+  V.rolls[0]={label:p.name+" (critical)",total:`${L.hit.total} to hit · ${L.dmg.total} dmg`};V.fresh=true;
+}
+
+/* ---------- Auth ---------- */
+const brand=`<div class="brand">${ic("d20",26,1.6)}<span>Rulebook</span></div>`;
+function authArt(){
+  return `<div class="auth-art" aria-hidden="true">${hex([[3,1,1,.2],[4,1,0,.3],[4,2,1,.4],[9,3,0,.18],[10,3,1,.12],[2,5,0,.14],[11,0,1,.2]])}
+    <div>
+    <div class="preview" data-role="gm">
+      <div class="ph"><div class="tile" style="box-shadow:none;border-radius:9px">${ic("scroll",18)}</div><h3>Emberfall house rules</h3></div>
+      <div class="pr"><b>Long rest ${srcTag("Modified")}</b><p>Only in a safe haven, such as an inn or a warded camp.</p></div>
+      <div class="pr"><b>Flasks of fire oil ${srcTag("Custom")}</b><p>Throwing and lighting oil takes a single action.</p></div>
+      <div class="pr"><b>Advantage ${srcTag("Official")}</b><p>Roll two d20s and use the higher result.</p></div>
+    </div>
+    <p class="art-cap" style="margin-inline:auto">Start from the official rules. Change what your table plays differently.</p></div>
+  </div>`;
+}
+function authView(){
+  if(V.authStep===2) return `<div class="auth" data-role="gm"><div class="auth-form">${brand}
+    <p class="muted" style="margin:0 0 6px;font-weight:500">Step 2 of 2</p>
+    <h1>Set up your account</h1><p class="sub">This is the name your players and GMs will see.</p>
+    <form id="setupForm"><label class="lb" for="dn">Display name</label>
+      <input class="field" id="dn" required placeholder="e.g. Cole" autocomplete="nickname">
+      <div class="err" id="aerr"></div><button class="btn">Continue to dashboard</button></form>
+    <div style="margin-bottom:auto"></div></div>${authArt()}</div>`;
+  const login=V.authMode==="login";
+  return `<div class="auth" data-role="gm"><div class="auth-form">${brand}
+    <h1>${login?"Welcome back to the table":"Create your account"}</h1>
+    <p class="sub">Keep your group's D&D rules, house rules and all, in one shared place.</p>
+    <form id="authForm">
+      <label class="lb" for="em">Email</label>
+      <input class="field" id="em" type="email" required placeholder="you@example.com" autocomplete="email">
+      <label class="lb" for="pw">Password</label>
+      <input class="field" id="pw" type="password" required minlength="6" placeholder="${login?"Your password":"At least 6 characters"}" autocomplete="${login?"current-password":"new-password"}">
+      <div class="err" id="aerr"></div>
+      <button class="btn">${login?"Log in":"Sign up"}</button>
+      <div class="or">or</div>
+      <button type="button" class="btn ghost" id="demoBtn">Try the demo without an account</button>
+    </form>
+    <p class="swap">${login?"New here?":"Already have an account?"} <button class="linkbtn" id="swapAuth">${login?"Create an account":"Log in"}</button></p>
+  </div>${authArt()}</div>`;
+}
+function bindAuth(){
+  $("#swapAuth")?.addEventListener("click",()=>{V.authMode=V.authMode==="login"?"signup":"login";render();});
+  $("#demoBtn")?.addEventListener("click",()=>{
+    S.user={email:"demo@rulebook.app",name:"Demo GM"};
+    if(!S.rulesets.some(r=>r.owner==="Demo GM")) S.rulesets.push(demoRuleset("Demo GM"));
+    if(!S.presets["demo@rulebook.app"]) S.presets["demo@rulebook.app"]=[{id:uid(),name:"Longsword",hit:"1d20+5",dmg:"1d8+3"},{id:uid(),name:"Fire Bolt",hit:"1d20+5",dmg:"1d10"},{id:uid(),name:"Stealth check",hit:"1d20+4",dmg:""}];
+    save();go("home");});
+  $("#authForm")?.addEventListener("submit",e=>{e.preventDefault();
+    const em=$("#em").value.trim().toLowerCase(),pw=$("#pw").value;
+    if(V.authMode==="login"){
+      const u=S.users[em];
+      if(!u){$("#aerr").textContent="No account uses that email. Create an account instead.";return;}
+      if(u.pw!==pw){$("#aerr").textContent="That password doesn't match this account.";return;}
+      S.user={email:em,name:u.name};save();go("home");
+    }else{
+      if(S.users[em]){$("#aerr").textContent="An account already uses that email. Log in instead.";return;}
+      V.pending={em,pw};V.authStep=2;render();$("#dn")?.focus();
+    }});
+  $("#setupForm")?.addEventListener("submit",e=>{e.preventDefault();
+    const name=$("#dn").value.trim();if(!name)return;
+    S.users[V.pending.em]={pw:V.pending.pw,name};S.user={email:V.pending.em,name};
+    V.authStep=1;V.pending=null;save();go("home");});
+}
+
+/* ---------- Shell ---------- */
+function crumbs(){
+  const c=[["home","Home"]],role=roleOf(V.view),r=byId(V.id);
+  if(role==="gm")c.push(["gm","GM dashboard"]);
+  if(role==="pl")c.push(["player","Player dashboard"]);
+  if(V.view==="newRuleset")c.push([null,"New ruleset"]);
+  if(V.view==="edit"&&r)c.push([null,"Edit "+r.name]);
+  if(V.view==="view"&&r)c.push([null,r.name]);
+  if(V.view==="join")c.push([null,"Join a campaign"]);
+  if(V.view==="conds")c.push([null,"Conditions"]);
+  if(V.view==="pview"&&r)c.push([null,r.campaign]);
+  return c.map(([v,l],i)=>(i?'<span class="crumb-sep">/</span>':"")+(v&&i<c.length-1?`<button class="crumb" data-go="${v}">${esc(l)}</button>`:`<span class="crumb here">${esc(l)}</span>`)).join("");
+}
+function sidebar(){
+  const role=roleOf(V.view);
+  const gmSet=mine().map(r=>`<button class="nav sub ${V.id===r.id&&role==="gm"?"active":""}" data-role="gm" data-go="view" data-id="${r.id}">${ic("scroll",16)}<span class="nm">${esc(r.name)}</span></button>`).join("");
+  const plSet=S.joined.map(byId).filter(Boolean).map(r=>`<button class="nav sub ${V.id===r.id&&role==="pl"?"active":""}" data-role="pl" data-go="pview" data-id="${r.id}">${ic("map",16)}<span class="nm">${esc(r.campaign)}</span></button>`).join("");
+  const a=v=>V.view===v?"active":"";
+  return `<nav class="sidebar ${V.sideOpen?"open":""}" aria-label="Main">
+    ${brand}
+    <button class="nav ${a("home")}" data-go="home">${ic("home")}Home</button>
+    <div class="nav-sec"><span class="dot" style="background:var(--gm)"></span>Game master</div>
+    <button class="nav ${a("gm")}" data-role="gm" data-go="gm">${ic("book")}GM dashboard</button>
+    ${gmSet}
+    <div class="nav-sec"><span class="dot" style="background:var(--pl)"></span>Player</div>
+    <button class="nav ${a("player")}" data-role="pl" data-go="player">${ic("sword")}Player dashboard</button>
+    ${plSet}
+    <div class="nav-sec">Tools</div>
+    <button class="nav" data-dice>${ic("dice")}Dice roller</button>
+    <button class="nav ${a("conds")}" data-go="conds">${ic("shield")}Conditions</button>
+    <div class="spacer"></div>
+    <div class="who"><div class="av">${esc((me()[0]||"R").toUpperCase())}</div><div>${esc(me())}<small>${esc(S.user.email)}</small></div>
+      <button class="iconbtn" id="logout" aria-label="Log out" title="Log out">${ic("out")}</button></div>
+  </nav>`;
+}
+const head=(icon,title,lede)=>`<div class="tile">${ic(icon,34,1.6)}</div><h1>${esc(title)}</h1>${lede?`<p class="lede">${lede}</p>`:""}`;
+const empty=(icon,title,text,btn)=>`<div class="empty"><div class="art">${ic(icon,32,1.5)}</div><b>${title}</b><p>${text}</p>${btn||""}</div>`;
+function rowMenu(id,items){
+  if(V.menu!==id)return"";
+  return `<div class="pop" role="menu">${items.map(([label,icon,attr,bad])=>`<button role="menuitem" ${attr} class="${bad?"bad":""}">${ic(icon,16)}${label}</button>`).join("")}</div>`;
+}
+
+/* ---------- Pages ---------- */
+function homePage(){
+  return `${head("d20","Welcome, "+me(),"Pick how you're using Rulebook today. You can switch any time from the sidebar.")}
+  <div class="choices">
+    <button class="choice" data-role="gm" data-go="gm"><div class="mini">${hex([[5,0,1,.2],[6,0,0,.3],[6,1,1,.14]])}<div class="tile">${ic("book",26,1.6)}</div></div>
+      <div class="ct"><b>I'm running a game</b><span>Build rulesets on top of D&D 5e, add house rules, and share them with your players.</span></div></button>
+    <button class="choice" data-role="pl" data-go="player"><div class="mini">${hex([[5,0,0,.2],[5,0,1,.3],[6,1,0,.14]])}<div class="tile">${ic("sword",26,1.6)}</div></div>
+      <div class="ct"><b>I'm playing</b><span>Join your GM's campaign with an invite link and look up the rules at the table.</span></div></button>
+  </div>
+  <div class="note" data-role="pl">${ic("info",20)}<div>Want to try the player side? Join with the invite code <b>EMBER1</b>.</div></div>`;
+}
+
+function gmPage(){
+  const rs=mine(),camp=rs.filter(r=>r.shareCode);
+  const rows=rs.map(r=>`<div class="lrow"><button class="lopen" data-go="view" data-id="${r.id}">
+      <span class="lic">${ic("scroll",18)}</span><span class="lmain"><b>${esc(r.name)}</b><span>${esc(r.campaign)}</span></span>
+      <span class="lmeta"><span class="tag">${plural(changes(r),"change")}</span>${r.shareCode?'<span class="tag off">Shared</span>':""}</span></button>
+    <button class="iconbtn" data-menu="${r.id}" aria-label="More actions for ${esc(r.name)}" aria-expanded="${V.menu===r.id}">${ic("dots",18)}</button>
+    ${rowMenu(r.id,[["View rules","eye",`data-go="view" data-id="${r.id}"`],["Edit","pen",`data-go="edit" data-id="${r.id}"`],["Share","link",`data-share="${r.id}"`],["Delete","trash",`data-del="${r.id}"`,1]])}</div>`).join("");
+  const crow=camp.map(r=>`<div class="lrow"><button class="lopen" data-share="${r.id}">
+      <span class="lic">${ic("map",18)}</span><span class="lmain"><b>${esc(r.campaign)}</b><span>${r.access.length?esc(r.access.join(", ")):"No players yet"}</span></span>
+      <span class="lmeta"><span class="tag">${plural(r.access.length,"player")}</span></span></button></div>`).join("");
+  return `${head("book","GM dashboard","Your rulesets start from the official D&D 5e rules. Change what you like and share the result with your table.")}
+  <h2>My rulesets<span class="grow"></span><button class="btn" data-go="newRuleset">${ic("plus",16,2.2)}New ruleset</button></h2>
+  ${rs.length?`<div class="list">${rows}<button class="addrow" data-go="newRuleset">${ic("plus",16)}New ruleset</button></div>`
+    :`<div class="list">${empty("scroll","No rulesets yet","Create one to start writing house rules on top of D&D 5e.",`<button class="btn" data-go="newRuleset">${ic("plus",16,2.2)}Create your first ruleset</button>`)}</div>`}
+  <h2>My campaigns</h2>
+  ${camp.length?`<div class="list">${crow}</div>`:`<div class="list">${empty("link","No shared campaigns yet","A campaign appears here once you share a ruleset with your players.")}</div>`}`;
+}
+
+function newRulesetPage(){
+  return `${head("scroll","New ruleset","Every ruleset copies a base system. You can change its rules and add your own afterwards.")}
+  <form class="panel" id="newForm" style="margin-top:28px">
+    <label class="lb" for="nb" style="margin-top:0">Base system</label>
+    <select class="field" id="nb"><option>D&D 5e (SRD)</option></select>
+    <div class="two"><div><label class="lb" for="nn">Ruleset name</label><input class="field" id="nn" required placeholder="e.g. Gritty realism rules"></div>
+    <div><label class="lb" for="nc">Campaign name</label><input class="field" id="nc" required placeholder="e.g. Tomb of the Salt King"></div></div>
+    <label class="lb" for="nd">Description</label>
+    <textarea class="field" id="nd" placeholder="What's different about how your table plays?"></textarea>
+    <div class="row"><button class="btn">Create ruleset</button><button type="button" class="btn ghost" data-go="gm">Cancel</button></div>
+  </form>`;
+}
+
+function editPage(){
+  const r=byId(V.id);if(!r)return notFound();
+  const off=OFFICIAL.map(o=>{
+    const mod=r.overrides[o.id];
+    if(V.editing===o.id)return `<div class="rule"><header><h4>${esc(o.title)}</h4><span class="tag">${o.cat}</span></header>
+      <p class="muted" style="font-size:15px;margin:6px 0">Official: ${esc(o.text)}</p>
+      <textarea class="field" id="ovText" aria-label="Your version of ${esc(o.title)}">${esc(mod||o.text)}</textarea>
+      <div class="actions" style="margin-top:10px"><button class="btn" data-saveov="${o.id}">Save change</button><button class="btn ghost" data-cancel>Cancel</button></div></div>`;
+    return `<div class="rule"><header><h4>${esc(o.title)}</h4><span class="tag">${o.cat}</span>${mod?srcTag("Modified"):""}<span class="grow"></span>
+      <button class="act" data-ov="${o.id}">${ic("pen",15)}Modify</button>${mod?`<button class="act" data-reset="${o.id}">Restore official</button>`:""}</header>
+      ${mod?`<div class="cmp"><div><small>Official 5e</small><p>${esc(o.text)}</p></div><div class="yours"><small>Your table</small><p>${esc(mod)}</p></div></div>`:`<p class="rtext">${esc(o.text)}</p>`}</div>`;
+  }).join("");
+  const cus=r.custom.map(c=>`<div class="rule"><header><h4>${esc(c.title)}</h4><span class="tag">${esc(c.cat)}</span>${srcTag("Custom")}<span class="grow"></span>
+    <button class="act bad" data-delc="${c.id}">${ic("trash",15)}Remove</button></header><p class="rtext">${esc(c.text)}</p></div>`).join("");
+  return `${head("pen",r.name)}
+  <dl class="props"><dt>Base system</dt><dd><span class="tag">${esc(r.base)}</span></dd><dt>Campaign</dt><dd>${esc(r.campaign)}</dd><dt>Description</dt><dd>${esc(r.desc)||'<span class="muted">None yet</span>'}</dd></dl>
+  <div class="actions"><button class="btn ghost" data-go="view" data-id="${r.id}">${ic("eye",16)}View complete rules</button><button class="btn ghost" data-share="${r.id}">${ic("link",16)}Share</button></div>
+  <h2>Add a custom rule</h2>
+  <form class="panel" id="customForm">
+    <div class="two"><div><label class="lb" for="ct" style="margin-top:0">Rule name</label><input class="field" id="ct" required placeholder="e.g. Potions as a bonus action"></div>
+    <div><label class="lb" for="cc" style="margin-top:0">Category</label><select class="field" id="cc">${CATS.map(c=>`<option ${c==="Homebrew"?"selected":""}>${c}</option>`).join("")}</select></div></div>
+    <label class="lb" for="cx">How it works</label><textarea class="field" id="cx" required placeholder="Describe the rule the way you'd explain it at the table."></textarea>
+    <div class="row"><button class="btn">Add custom rule</button></div>
+  </form>
+  ${r.custom.length?`<h3>Your custom rules</h3>${cus}`:""}
+  <h2>Official rules</h2>
+  <p class="muted" style="margin-top:-6px">Modify any official rule for this ruleset. The original stays here if you want to restore it.</p>
+  ${off}`;
+}
+
+function rulesList(r){
+  const rul=id=>(r.rulings||[]).filter(z=>z.rule===id).map(z=>`<div class="rul-inline"><b>GM ruling · ${fmtDate(z.date)}</b><p>${linkConds(esc(z.a))}</p></div>`).join("");
+  let list=rulesFor(r);const f=V.filter,q=V.q.trim().toLowerCase();
+  if(f==="Official")list=list.filter(x=>x.src==="Official");
+  else if(f==="Changed by GM")list=list.filter(x=>x.src!=="Official");
+  else if(CATS.includes(f))list=list.filter(x=>x.cat===f);
+  if(q)list=list.filter(x=>(x.title+" "+x.text).toLowerCase().includes(q));
+  const chips=["All","Changed by GM","Official",...CATS].map(c=>`<button class="chip ${V.filter===c?"on":""}" data-filter="${c}" aria-pressed="${V.filter===c}">${c}</button>`).join("");
+  const groups=CATS.map(cat=>{const items=list.filter(x=>x.cat===cat);if(!items.length)return"";
+    return `<details class="grp" open><summary>${ic("chev",16,2.2).replace('class="i"','class="i chev"')}${cat}<span class="n">${items.length}</span></summary>
+      ${items.map(x=>`<article class="rule"><header><h4>${esc(x.title)}</h4>${srcTag(x.src)}</header><p class="rtext">${linkConds(esc(x.text))}</p>
+        ${x.src==="Modified"?`<details class="orig"><summary>See the official rule</summary><p>${linkConds(esc(x.orig))}</p></details>`:""}${rul(x.id)}</article>`).join("")}</details>`;}).join("");
+  return `<div class="toolbar"><div class="searchbox">${ic("search",18)}<input class="field" id="q" placeholder="Search rules" value="${esc(V.q)}" aria-label="Search rules"></div><div class="chips">${chips}</div></div>
+  ${groups||empty("search","No rules match","Clear the search or pick another filter.",`<button class="btn ghost" data-clear>Clear search and filters</button>`)}`;
+}
+
+function viewPage(){
+  const r=byId(V.id);if(!r)return notFound();
+  const off=OFFICIAL.length-Object.keys(r.overrides).length;
+  return `${head("scroll",r.name,esc(r.desc))}
+  <div class="note">${ic("book",20)}<div>${plural(off,"official rule")} unchanged, ${Object.keys(r.overrides).length} modified, and ${plural(r.custom.length,"custom rule")}.</div></div>
+  <div class="actions"><button class="btn" data-go="edit" data-id="${r.id}">${ic("pen",16)}Edit ruleset</button><button class="btn ghost" data-share="${r.id}">${ic("link",16)}Share</button><button class="btn ghost" data-print>${ic("print",16)}Print rules</button></div>
+  ${printHead(r)}${rulingsSection(r,true)}<h2>Rules</h2>${rulesList(r)}`;
+}
+
+function playerPage(){
+  const js=S.joined.map(byId).filter(Boolean);
+  const rows=js.map(r=>`<div class="lrow"><button class="lopen" data-go="pview" data-id="${r.id}">
+      <span class="lic">${ic("map",18)}</span><span class="lmain"><b>${esc(r.campaign)}</b><span>Run by ${esc(r.owner)}</span></span>
+      <span class="lmeta"><span class="tag">${plural(changes(r),"house rule")}</span></span></button>
+    <button class="iconbtn" data-menu="${r.id}" aria-label="More actions for ${esc(r.campaign)}" aria-expanded="${V.menu===r.id}">${ic("dots",18)}</button>
+    ${rowMenu(r.id,[["View rules","eye",`data-go="pview" data-id="${r.id}"`],["Leave campaign","door",`data-leave="${r.id}"`,1]])}</div>`).join("");
+  return `${head("sword","Player dashboard","Every campaign you've joined, with your GM's rules ready to look up.")}
+  <h2>My campaigns<span class="grow"></span><button class="btn" data-go="join">${ic("link",16)}Join a campaign</button></h2>
+  ${js.length?`<div class="list">${rows}<button class="addrow" data-go="join">${ic("plus",16)}Join with an invite link</button></div>`
+    :`<div class="list">${empty("map","You haven't joined a campaign yet","Ask your GM for an invite link, or try the sample code EMBER1.",`<button class="btn" data-go="join">${ic("link",16)}Join a campaign</button>`)}</div>`}`;
+}
+
+function joinPage(){
+  const r=V.joinFound;
+  return `${head("link","Join a campaign","Paste the invite link or code your GM sent you.")}
+  <form class="panel" id="joinForm" style="margin-top:28px">
+    <label class="lb" for="jl" style="margin-top:0">Invite link or code</label>
+    <input class="field" id="jl" required placeholder="https://rulebook.app/join/EMBER1">
+    <div class="err">${esc(V.joinErr)}</div>
+    <div class="row" style="margin-top:4px"><button class="btn">Find campaign</button><button type="button" class="btn ghost" data-go="player">Cancel</button></div>
+  </form>
+  ${r?`<div class="panel" style="flex-direction:row;gap:16px;align-items:flex-start;border-color:var(--acc)"><span class="lic" style="width:48px;height:48px">${ic("map",24)}</span>
+    <div style="flex:1"><b style="font-size:20px">${esc(r.campaign)}</b>
+    <p class="muted" style="margin:2px 0 0">Run by ${esc(r.owner)} using “${esc(r.name)}”, with ${plural(changes(r),"house rule")}.</p>
+    <div class="row"><button class="btn" data-confirmjoin="${r.id}">Add to my campaigns</button><button class="btn ghost" data-canceljoin>Not this one</button></div></div></div>`:""}`;
+}
+
+function pviewPage(){
+  const r=byId(V.id);if(!r)return notFound();
+  return `${head("map",r.campaign)}
+  <dl class="props"><dt>Game master</dt><dd>${esc(r.owner)}</dd><dt>Ruleset</dt><dd>${esc(r.name)}</dd><dt>Base system</dt><dd><span class="tag">${esc(r.base)}</span></dd></dl>
+  ${r.desc?`<div class="note">${ic("info",20)}<div>${esc(r.desc)}</div></div>`:""}
+  <div class="actions"><button class="btn ghost" data-print>${ic("print",16)}Print rules</button><button class="btn ghost" data-dice>${ic("dice",16)}Roll dice</button><button class="btn ghost" data-go="conds">${ic("shield",16)}Conditions</button></div>
+  ${printHead(r)}${rulingsSection(r,false)}<h2>Rules</h2>${rulesList(r)}
+  <div class="actions" style="margin-top:40px"><button class="btn ghost" data-leave="${r.id}">${ic("door",16)}Leave campaign</button></div>`;
+}
+function condCard(c){
+  return `<article class="cond" id="cond-${c.id}"><h3>${c.name}</h3><p class="csum">${c.sum}</p>
+    ${c.levels?`<ol class="lv">${c.levels.map(l=>`<li>${l}</li>`).join("")}</ol>`:""}
+    <ul ${c.levels?'style="margin-top:8px"':""}>${c.fx.map(f=>`<li>${linkConds(f,c.id)}</li>`).join("")}</ul></article>`;
+}
+function condsPage(){
+  const q=V.cq.trim().toLowerCase();
+  const list=CONDS.filter(c=>!q||(c.name+" "+c.sum+" "+c.fx.join(" ")+" "+(c.levels||[]).join(" ")).toLowerCase().includes(q));
+  return `${head("shield","Conditions","What each condition does under the D&D 5e rules. Tap a condition name anywhere in your rules to see it.")}
+  <div class="toolbar"><div class="searchbox">${ic("search",18)}<input class="field" id="cq" placeholder="Search conditions" value="${esc(V.cq)}" aria-label="Search conditions"></div></div>
+  ${list.length?`<div class="cgrid">${list.map(condCard).join("")}</div>`:empty("search","No conditions match","Try a different word.","")}
+  <p class="hint" style="margin-top:24px">Summarized from the D&D 5e System Reference Document 5.1 by Wizards of the Coast, available under CC BY 4.0.</p>`;
+}
+function rulingsSection(r,gm){
+  const all=rulesFor(r), nameOf=id=>all.find(x=>x.id===id)?.title;
+  const list=[...(r.rulings||[])].sort((a,b)=>b.date.localeCompare(a.date));
+  const items=list.map(x=>`<article class="ruling"><div class="meta"><span>${fmtDate(x.date)}</span>${x.rule&&nameOf(x.rule)?`<span class="tag">About: ${esc(nameOf(x.rule))}</span>`:""}
+      ${gm?`<span style="flex:1"></span><button class="act bad no-print" data-delruling="${x.id}">${ic("trash",15)}Remove</button>`:""}</div>
+    <p class="q">${linkConds(esc(x.q))}</p><p class="a">${linkConds(esc(x.a))}</p></article>`).join("");
+  const form=gm&&V.rulingForm?`<form class="panel no-print" id="rulingForm">
+    <label class="lb" for="rq" style="margin-top:0">What came up at the table?</label>
+    <input class="field" id="rq" required placeholder="e.g. Can you jump off a balcony and attack in the same turn?">
+    <label class="lb" for="ra">Your ruling</label>
+    <textarea class="field" id="ra" required placeholder="How you decided it, so it plays the same way next time."></textarea>
+    <label class="lb" for="rr">Related rule (optional)</label>
+    <select class="field" id="rr"><option value="">None</option>${all.map(x=>`<option value="${x.id}">${esc(x.title)}</option>`).join("")}</select>
+    <div class="row"><button class="btn">Save ruling</button><button type="button" class="btn ghost" data-cancelruling>Cancel</button></div></form>`:"";
+  const none=gm?(V.rulingForm?"":`<div class="list no-print" style="margin-top:12px">${empty("gavel","No rulings yet","When you make a call mid-session, log it here so it plays the same way next time.","")}</div>`)
+    :`<div class="list no-print" style="margin-top:12px">${empty("gavel","No rulings yet","Your GM hasn't logged any rulings for this campaign yet.","")}</div>`;
+  return `<h2>${gm?"Rulings":"GM rulings"}<span class="grow"></span>${gm&&!V.rulingForm?`<button class="btn ghost no-print" data-addruling>${ic("plus",16,2.2)}Log a ruling</button>`:""}</h2>
+  <p class="muted" style="margin:-6px 0 4px">${gm?"Calls you've made during play. Logging them keeps future calls consistent, and your players can see them.":"Calls your GM has made during play. They'll apply the same way next time."}</p>
+  ${form}${items||none}`;
+}
+function printHead(r){
+  const d=new Date().toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"});
+  return `<div class="print-only ph-head"><span>${esc(r.campaign)} · Run by ${esc(r.owner)} · Based on ${esc(r.base)}</span><span>Printed from Rulebook, ${d}</span></div>`;
+}
+function printRules(){
+  if(V.filter!=="All"||V.q){V.filter="All";V.q="";render();}
+  document.querySelectorAll("details").forEach(d=>d.open=true);
+  setTimeout(()=>window.print(),50);
+}
+function notFound(){return `${head("info","Page not found","This ruleset was removed. Go back to your dashboard.")}`;}
+
+/* ---------- Modals ---------- */
+function faceHTML(f){return `<span class="face ${f.drop?"drop":f.v===f.sides?"max":f.v===1?"min":""}">${f.neg?"−":""}${f.v}</span>`;}
+function resultBlock(r,small){
+  return `<div class="tot ${small?"sm":""} ${r.crit?"crit":r.fumble?"fumble":""}">${r.total}</div>
+    <div class="faces">${r.faces.map(faceHTML).join("")}</div>
+    <div class="lbl">${esc(r.label)}${r.crit?" · Natural 20!":r.fumble?" · Natural 1":""}</div>`;
+}
+function diceModal(){
+  const d=V.dice, L=V.lastRoll, ps=myPresets(), pd=V.presetDraft||{};
+  const dieBtns=DICE.map(n=>`<button class="die ${d.sides===n?"on":""}" data-sides="${n}" aria-pressed="${d.sides===n}">${ic("d"+n,24,1.6)}d${n}</button>`).join("");
+  const modes=`<div class="modes" role="group" aria-label="Mode for d20 rolls"><span class="hint" style="align-self:center">d20 rolls:</span>${[["normal","Normal"],["adv","Advantage"],["dis","Disadvantage"]].map(([k,l])=>`<button class="chip ${d.mode===k?"on":""}" data-mode="${k}" aria-pressed="${d.mode===k}">${l}</button>`).join("")}</div>`;
+  let res;
+  if(!L) res=`<div class="lbl">Pick your dice and press Roll, or tap one of your saved rolls.</div>`;
+  else if(L.kind==="one") res=resultBlock(L.r);
+  else if(!(L.hit&&L.dmg)) res=`<div class="lbl"><b style="color:var(--ink)">${esc(L.name)}</b></div>${resultBlock(L.hit||L.dmg)}`;
+  else res=`<div class="lbl"><b style="color:var(--ink)">${esc(L.name)}</b></div>
+    <div class="dsplit"><div><small>Attack or check</small>${resultBlock(L.hit,1)}</div><div><small>Damage</small>${resultBlock(L.dmg,1)}</div></div>
+    ${L.hit.crit&&!L.critDone?`<button class="btn" data-critdmg style="background:var(--gm);color:var(--surface)">Roll critical damage (dice doubled)</button>`:""}`;
+  const pform=V.presetForm?`<form class="pform" id="presetForm">
+    <label class="lb" for="pn" style="margin-top:0">Name</label><input class="field" id="pn" required value="${esc(pd.name||"")}" placeholder="e.g. Longsword">
+    <div class="two"><div><label class="lb" for="ph">Attack or check</label><input class="field" id="ph" value="${esc(pd.hit||"")}" placeholder="1d20+5" autocomplete="off"></div>
+    <div><label class="lb" for="pdm">Damage or effect</label><input class="field" id="pdm" value="${esc(pd.dmg||"")}" placeholder="1d8+3" autocomplete="off"></div></div>
+    <p class="hint" style="margin:6px 0 0">Use dice notation like 1d20+5 or 2d6+1d8+3. Fill in one or both.</p>
+    <div class="err">${esc(V.presetErr||"")}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn">Save roll</button><button type="button" class="btn ghost" data-cancelpreset>Cancel</button></div></form>`:"";
+  const saved=`<div class="presets"><div style="display:flex;align-items:center;gap:8px"><b style="flex:1">Saved rolls</b>${V.presetForm?"":`<button class="act" data-newpreset>${ic("plus",15,2.2)}New saved roll</button>`}</div>
+    ${ps.length?`<div class="plist">${ps.map(p=>`<div class="pchip"><button class="pr-go" data-preset="${p.id}"><b>${esc(p.name)}</b><span>${esc([p.hit,p.dmg].filter(Boolean).join(" · "))}</span></button><button class="px" data-delpreset="${p.id}" aria-label="Delete ${esc(p.name)}">${X(16)}</button></div>`).join("")}</div>`
+      :(V.presetForm?"":`<p class="hint" style="margin:4px 0 0">Save rolls you make often, like an attack and its damage, and roll them with one tap.</p>`)}
+    ${pform}</div>`;
+  const hist=V.rolls.slice(1).map(h=>`<li><span>${esc(h.label)}</span><strong>${esc(h.total)}</strong></li>`).join("");
+  return `<div class="overlay" data-close><div class="modal dice" role="dialog" aria-modal="true" aria-labelledby="mh">
+    <div style="display:flex;align-items:center;gap:8px"><h3 id="mh" style="flex:1;margin:0">Dice roller</h3><button class="iconbtn" data-closebtn aria-label="Close">${X()}</button></div>
+    <p class="fair">Every roll is completely random, generated by your device's secure random number generator.</p>
+    <div class="dgrid" role="group" aria-label="Die type">${dieBtns}</div>
+    <div class="dctl">
+      <div><label>Number of dice</label><div class="step"><button data-n="-1" aria-label="Fewer dice">${ic("minus",16,2.2)}</button><output aria-live="polite">${d.n}</output><button data-n="1" aria-label="More dice">${ic("plus",16,2.2)}</button></div></div>
+      <div><label>Modifier</label><div class="step"><button data-m="-1" aria-label="Lower modifier">${ic("minus",16,2.2)}</button><output aria-live="polite">${d.mod>0?"+"+d.mod:d.mod}</output><button data-m="1" aria-label="Raise modifier">${ic("plus",16,2.2)}</button></div></div>
+    </div>
+    ${modes}
+    <button class="btn rollbtn" data-roll>${ic("dice",18)}Roll ${esc(exprLabel(trayExpr(),false))}</button>
+    <div class="dres ${V.fresh?"fresh":""}" aria-live="polite">${res}</div>
+    ${saved}
+    ${hist?`<div class="dhist"><b>Earlier rolls</b><ol>${hist}</ol></div>`:""}
+    ${V.rolls.length?`<div class="row" style="margin-top:12px"><button class="btn ghost" data-clearrolls>Clear history</button></div>`:""}
+  </div></div>`;
+}
+
+function modalHTML(){
+  const m=V.modal;if(!m)return"";if(m.type==="dice")return diceModal();
+  if(m.type==="cond"){const c=CONDS.find(x=>x.id===m.id);if(!c)return"";
+    return `<div class="overlay" data-close><div class="modal" role="dialog" aria-modal="true" aria-label="${c.name}">
+      <div style="display:flex;justify-content:flex-end;margin:-10px -10px -24px 0"><button class="iconbtn" data-closebtn aria-label="Close">${X()}</button></div>${condCard(c)}
+      <div class="row"><button class="btn ghost" data-go="conds">${ic("shield",16)}See all conditions</button></div></div></div>`;}const r=byId(m.id);if(!r)return"";
+  const role=m.type==="leave"?"pl":"gm";
+  const wrap=inner=>`<div class="overlay" data-close data-role="${role}"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="mh">${inner}</div></div>`;
+  if(m.type==="share")return wrap(`<h3 id="mh">Share ${esc(r.campaign)}</h3>
+    <p class="muted" style="margin:0">Anyone with this link can join as a player and read the ruleset. They can't edit it.</p>
+    ${r.shareCode?`<div class="copyline"><input class="field" id="shareUrl" readonly value="${shareURL(r)}" aria-label="Share link"><button class="btn" data-copy>Copy link</button></div>
+      <div class="access"><b>Players with access</b>${r.access.length?`<div class="people">${r.access.map(a=>`<span class="person"><i>${esc(a[0].toUpperCase())}</i>${esc(a)}</span>`).join("")}</div>`:'<p class="muted" style="margin:4px 0 0">Nobody has joined yet.</p>'}</div>
+      <div class="row"><button class="btn ghost" data-regen="${r.id}">Generate new link</button><button class="btn ghost" data-closebtn>Done</button></div>`
+    :`<div class="row"><button class="btn" data-gen="${r.id}">${ic("link",16)}Generate link</button><button class="btn ghost" data-closebtn>Cancel</button></div>`}`);
+  if(m.type==="leave")return wrap(`<h3 id="mh">Leave ${esc(r.campaign)}?</h3>
+    <p class="muted" style="margin:0">It will be removed from your list. You'll need a new invite link to rejoin.</p>
+    <div class="row"><button class="btn danger" data-doleave="${r.id}">Leave campaign</button><button class="btn ghost" data-closebtn>Cancel</button></div>`);
+  if(m.type==="delete")return wrap(`<h3 id="mh">Delete ${esc(r.name)}?</h3>
+    <p class="muted" style="margin:0">Players in this campaign will lose access to its rules.</p>
+    <div class="row"><button class="btn danger" data-dodel="${r.id}">Delete ruleset</button><button class="btn ghost" data-closebtn>Cancel</button></div>`);
+}
+
+/* ---------- Render ---------- */
+function render(){
+  hexN=0;
+  const root=$("#root");
+  if(!S.user){root.innerHTML=authView();bindAuth();return;}
+  const pages={home:homePage,gm:gmPage,newRuleset:newRulesetPage,edit:editPage,view:viewPage,player:playerPage,join:joinPage,pview:pviewPage,conds:condsPage};
+  const role=roleOf(V.view);
+  root.innerHTML=`<div class="app">${sidebar()}
+    <div class="main" ${role?`data-role="${role}"`:""}><div class="topbar"><button class="iconbtn menu-btn" id="menu" aria-label="Open menu" aria-expanded="${V.sideOpen}">${ic("menu",20)}</button>${crumbs()}
+      <div class="tb-right"><button class="tb-dice" data-dice>${ic("dice",16)}Roll dice</button></div></div>
+    <div class="scroll">${cover(role)}<main class="page">${(pages[V.view]||homePage)()}</main></div></div></div>
+    ${V.sideOpen?'<div class="scrim" data-scrim></div>':""}${tabbar(role)}${modalHTML()}`;
+  const wasFresh=V.fresh;V.fresh=false;
+  bind();
+  if(V.focus){document.querySelector("#root "+V.focus)?.focus({preventScroll:true});V.focus=null;}
+  if(wasFresh)document.querySelector("#root .dres")?.scrollIntoView({block:"nearest"});
+}
+function tabbar(role){
+  const t=(go,icon,label,on,r)=>`<button data-go="${go}" ${r?`data-role="${r}"`:""} class="${on?"on":""}" ${on?'aria-current="page"':""}>${ic(icon,22)}<span>${label}</span></button>`;
+  return `<nav class="tabbar" aria-label="Quick navigation">${t("home","home","Home",V.view==="home")}${t("gm","book","GM",role==="gm","gm")}
+    <button class="dicetab" data-dice>${ic("dice",22)}<span>Dice</span></button>${t("player","sword","Player",role==="pl","pl")}${t("conds","shield","Conditions",V.view==="conds")}</nav>`;
+}
+function on(sel,fn){document.querySelectorAll("#root "+sel).forEach(el=>el.addEventListener("click",e=>fn(el,e)));}
+function bind(){
+  $("#menu")?.addEventListener("click",()=>{V.sideOpen=!V.sideOpen;render();});
+  on("[data-scrim]",()=>{V.sideOpen=false;render();});
+  on("[data-dice]",()=>{V.menu=null;V.sideOpen=false;V.modal={type:"dice"};V.focus="[data-roll]";render();});
+  on("[data-sides]",b=>{V.dice.sides=+b.dataset.sides;V.focus=`[data-sides="${b.dataset.sides}"]`;render();});
+  on("[data-n]",b=>{V.dice.n=Math.min(20,Math.max(1,V.dice.n+ +b.dataset.n));V.focus=`[data-n="${b.dataset.n}"]`;render();});
+  on("[data-m]",b=>{V.dice.mod=Math.min(30,Math.max(-10,V.dice.mod+ +b.dataset.m));V.focus=`[data-m="${b.dataset.m}"]`;render();});
+  on("[data-mode]",b=>{V.dice.mode=b.dataset.mode;V.focus=`[data-mode="${b.dataset.mode}"]`;render();});
+  on("[data-roll]",()=>{doRoll();V.focus="[data-roll]";render();});
+  on("[data-clearrolls]",()=>{V.rolls=[];V.lastRoll=null;V.focus="[data-roll]";render();});
+  on("[data-print]",()=>printRules());
+  on("[data-cond]",b=>{V.menu=null;V.modal={type:"cond",id:b.dataset.cond};render();document.querySelector("#root .overlay .iconbtn")?.focus();});
+  const cq=$("#cq");if(cq)cq.addEventListener("input",()=>{V.cq=cq.value;render();const n=$("#cq");n.focus();n.setSelectionRange(n.value.length,n.value.length);});
+  on("[data-preset]",b=>{rollPreset(b.dataset.preset);V.focus=`[data-preset="${b.dataset.preset}"]`;render();});
+  on("[data-critdmg]",()=>{critDamage();V.focus="[data-roll]";render();});
+  on("[data-delpreset]",b=>{S.presets[S.user.email]=myPresets().filter(p=>p.id!==b.dataset.delpreset);save();V.focus="[data-roll]";render();toast("Saved roll deleted");});
+  on("[data-newpreset]",()=>{const e=trayExpr(),l=exprLabel(e,false);V.presetForm=true;V.presetErr="";V.presetDraft={name:"",hit:e.terms[0].sides===20?l:"",dmg:e.terms[0].sides===20?"":l};V.focus="#pn";render();});
+  on("[data-cancelpreset]",()=>{V.presetForm=false;V.presetDraft=null;V.presetErr="";V.focus="[data-newpreset]";render();});
+  $("#presetForm")?.addEventListener("submit",e=>{e.preventDefault();
+    const name=$("#pn").value.trim(),hit=$("#ph").value.trim(),dmg=$("#pdm").value.trim();
+    V.presetDraft={name,hit,dmg};V.presetErr="";
+    const norm=str=>{const x=parseExpr(str);return x&&exprLabel(x,false)+(x.mode!=="normal"?" "+x.mode:"");};
+    if(!hit&&!dmg)V.presetErr="Add an attack or check roll, a damage roll, or both.";
+    else if(hit&&!norm(hit))V.presetErr=`“${hit}” isn't dice notation the roller understands. Try something like 1d20+5, using d4, d6, d8, d10, d12, d20 or d100.`;
+    else if(dmg&&!norm(dmg))V.presetErr=`“${dmg}” isn't dice notation the roller understands. Try something like 1d8+3, using d4, d6, d8, d10, d12, d20 or d100.`;
+    if(V.presetErr){V.focus="#pn";render();return;}
+    const id=uid();myPresets().push({id,name,hit:hit?norm(hit):"",dmg:dmg?norm(dmg):""});
+    V.presetForm=false;V.presetDraft=null;save();V.focus=`[data-preset="${id}"]`;render();toast("Roll saved");});
+  on("[data-addruling]",()=>{V.rulingForm=true;V.focus="#rq";render();});
+  on("[data-cancelruling]",()=>{V.rulingForm=false;render();});
+  on("[data-delruling]",b=>{const r=byId(V.id);r.rulings=(r.rulings||[]).filter(x=>x.id!==b.dataset.delruling);save();render();toast("Ruling removed");});
+  $("#rulingForm")?.addEventListener("submit",e=>{e.preventDefault();const r=byId(V.id);
+    r.rulings=r.rulings||[];r.rulings.unshift({id:uid(),date:new Date().toLocaleDateString("en-CA"),q:$("#rq").value.trim(),a:$("#ra").value.trim(),rule:$("#rr").value});
+    V.rulingForm=false;save();render();toast("Ruling logged");});
+  $("#logout")?.addEventListener("click",()=>{S.user=null;save();V.authMode="login";V.modal=null;render();});
+  on("[data-go]",b=>go(b.dataset.go,b.dataset.id||null));
+  on("[data-menu]",(b,e)=>{e.stopPropagation();V.menu=V.menu===b.dataset.menu?null:b.dataset.menu;render();});
+  on("[data-share]",b=>{V.menu=null;V.modal={type:"share",id:b.dataset.share};render();});
+  on("[data-del]",b=>{V.menu=null;V.modal={type:"delete",id:b.dataset.del};render();});
+  on("[data-leave]",b=>{V.menu=null;V.modal={type:"leave",id:b.dataset.leave};render();});
+  on("[data-filter]",b=>{V.filter=b.dataset.filter;render();});
+  on("[data-clear]",()=>{V.filter="All";V.q="";render();});
+  const q=$("#q");if(q)q.addEventListener("input",()=>{V.q=q.value;render();const n=$("#q");n.focus();n.setSelectionRange(n.value.length,n.value.length);});
+
+  $("#newForm")?.addEventListener("submit",e=>{e.preventDefault();
+    const r={id:"rs-"+uid(),owner:me(),name:$("#nn").value.trim(),campaign:$("#nc").value.trim(),desc:$("#nd").value.trim(),base:$("#nb").value,overrides:{},custom:[],rulings:[],shareCode:null,access:[]};
+    S.rulesets.push(r);save();toast("Ruleset created");go("edit",r.id);});
+  on("[data-ov]",b=>{V.editing=b.dataset.ov;render();$("#ovText")?.focus();});
+  on("[data-cancel]",()=>{V.editing=null;render();});
+  on("[data-saveov]",b=>{const r=byId(V.id),id=b.dataset.saveov,t=$("#ovText").value.trim(),o=OFFICIAL.find(x=>x.id===id);
+    if(!t||t===o.text)delete r.overrides[id];else r.overrides[id]=t;V.editing=null;save();render();toast("Change saved");});
+  on("[data-reset]",b=>{delete byId(V.id).overrides[b.dataset.reset];save();render();toast("Official rule restored");});
+  $("#customForm")?.addEventListener("submit",e=>{e.preventDefault();
+    byId(V.id).custom.push({id:uid(),title:$("#ct").value.trim(),cat:$("#cc").value,text:$("#cx").value.trim()});save();render();toast("Custom rule added");});
+  on("[data-delc]",b=>{const r=byId(V.id);r.custom=r.custom.filter(c=>c.id!==b.dataset.delc);save();render();toast("Custom rule removed");});
+
+  $("#joinForm")?.addEventListener("submit",e=>{e.preventDefault();
+    const raw=$("#jl").value.trim(),c=(raw.split("/").filter(Boolean).pop()||"").toUpperCase(),r=S.rulesets.find(x=>x.shareCode===c);
+    V.joinFound=null;V.joinErr="";
+    if(!r)V.joinErr="No campaign uses that link. Check it with your GM, or try EMBER1.";
+    else if(S.joined.includes(r.id))V.joinErr="You're already in this campaign.";
+    else V.joinFound=r;
+    render();if($("#jl"))$("#jl").value=raw;});
+  on("[data-confirmjoin]",b=>{const r=byId(b.dataset.confirmjoin);S.joined.push(r.id);if(!r.access.includes(me()))r.access.push(me());save();toast("Added to your campaigns");go("pview",r.id);});
+  on("[data-canceljoin]",()=>{V.joinFound=null;render();});
+
+  on("[data-close]",(o,e)=>{if(e.target===o){V.modal=null;render();}});
+  on("[data-closebtn]",()=>{V.modal=null;render();});
+  on("[data-gen],[data-regen]",b=>{const r=byId(b.dataset.gen||b.dataset.regen);r.shareCode=code();save();render();toast("Link generated");});
+  on("[data-copy]",async()=>{const i=$("#shareUrl");try{await navigator.clipboard.writeText(i.value);toast("Link copied");}catch(e){i.select();toast("Press Ctrl+C to copy");}});
+  on("[data-doleave]",b=>{const r=byId(b.dataset.doleave);S.joined=S.joined.filter(x=>x!==r.id);r.access=r.access.filter(a=>a!==me());V.modal=null;save();toast("Left campaign");go("player");});
+  on("[data-dodel]",b=>{const id=b.dataset.dodel;S.rulesets=S.rulesets.filter(r=>r.id!==id);S.joined=S.joined.filter(x=>x!==id);V.modal=null;save();toast("Ruleset deleted");go("gm");});
+}
+document.addEventListener("click",e=>{if(V.menu&&!e.target.closest(".pop,[data-menu]")){V.menu=null;render();}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(V.menu){V.menu=null;render();}else if(V.modal){V.modal=null;render();}}});
+window.addEventListener("beforeprint",()=>document.querySelectorAll("details").forEach(d=>d.open=true));
+render();
+</script>
+</body>
+</html>
